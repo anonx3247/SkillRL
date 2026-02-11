@@ -1,0 +1,39 @@
+# ALFWorld configuration for SkillRL
+# Minimal config for text-based environment interaction
+
+env:
+  type: AlfredTWEnv
+  task_types: [1, 2, 3, 4, 5, 6]  # All task types: pick, look, clean, heat, cool, pick2
+  goal_desc_human_anns_prob: 0.0
+  domain_randomization: False
+  task_description: full
+  reward_config: rewards
+  expert_type: handcoded
+
+dataset:
+  data_path: $ALFWORLD_DATA/json_2.1.1/train
+  eval_id_data_path: $ALFWORLD_DATA/json_2.1.1/valid_seen
+  eval_ood_data_path: $ALFWORLD_DATA/json_2.1.1/valid_unseen
+  num_train_games: -1  # -1 means all games
+  num_eval_games: -1  # -1 means all games
+
+logic:
+  domain: $ALFWORLD_DATA/logic/alfred.pddl
+  grammar: $ALFWORLD_DATA/logic/alfred.twl2
+
+controller:
+  type: "oracle"  # Not used for text-only interface
+
+general:
+  random_seed: 42
+  num_train_games: -1  # Load all games
+  num_test_games: -1  # Load all games
+  training_method: dqn  # Not used for inference-only, but required by ALFWorld
+
+rl:
+  training:
+    max_nb_steps_per_episode: 50  # Max steps per episode
+    batch_size: 10
+    max_episode: 50000
+    learn_start_from_this_episode: 0
+    target_net_update_frequency: 500
