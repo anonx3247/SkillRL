@@ -12,7 +12,7 @@ This roadmap delivers a controlled ablation experiment testing whether skill lib
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & Agent Loop** - Environment integration, basic agent execution, trajectory logging
+- [x] **Phase 1: Foundation & Agent Loop** - Environment integration, basic agent execution, trajectory logging
 - [ ] **Phase 2: Skill System & Evaluation** - Skill library, semantic retrieval, full 134-task evaluation with parallel execution
 - [ ] **Phase 3: Teacher & Evolution** - Teacher distillation, autonomous skill evolution, W&B monitoring
 
@@ -34,9 +34,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Project scaffolding, trajectory data models, and JSONL persistence
-- [ ] 01-02-PLAN.md — ALFWorld environment wrapper with FastMCP tool server (11 tools)
-- [ ] 01-03-PLAN.md — Agent loop, DeepSeek integration, and end-to-end single-task execution
+- [x] 01-01-PLAN.md — Project scaffolding, trajectory data models, and JSONL persistence
+- [x] 01-02-PLAN.md — ALFWorld environment wrapper with FastMCP tool server (12 tools)
+- [x] 01-03-PLAN.md — Agent loop, DeepSeek integration, and end-to-end single-task execution
 
 ### Phase 2: Skill System & Evaluation
 **Goal**: Full 134-task evaluation with skill retrieval running in parallel, establishing baseline performance.
@@ -84,6 +84,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Agent Loop | 0/3 | Planning complete | - |
+| 1. Foundation & Agent Loop | 3/3 | Complete | 2026-02-11 |
 | 2. Skill System & Evaluation | 0/TBD | Not started | - |
 | 3. Teacher & Evolution | 0/TBD | Not started | - |

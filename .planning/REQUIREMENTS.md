@@ -7,23 +7,23 @@
 
 ### Environment Integration
 
-- [ ] **ENV-01**: ALFWorld environment exposed as FastMCP tool server with action tools (go_to, take, put, open, close, clean, heat, cool, use, examine, inventory)
-- [ ] **ENV-02**: Agent receives natural language observations from environment (no privileged state info)
-- [ ] **ENV-03**: Full 134 ALFWorld test tasks loadable across 6 subtask types (Pick, Look, Clean, Heat, Cool, Pick2)
+- [x] **ENV-01**: ALFWorld environment exposed as FastMCP tool server with action tools (go_to, take, put, open, close, clean, heat, cool, use, examine, inventory)
+- [x] **ENV-02**: Agent receives natural language observations from environment (no privileged state info)
+- [x] **ENV-03**: Full 134 ALFWorld test tasks loadable across 6 subtask types (Pick, Look, Clean, Heat, Cool, Pick2)
 
 ### Agent Execution
 
-- [ ] **AGT-01**: Agent runs autonomously in think → act → observe loop via DeepSeek V3.2 Reasoner (api.deepseek.com, OpenAI-compatible endpoint)
-- [ ] **AGT-02**: Agent has `task_completed(success, summary)` tool to end its run
-- [ ] **AGT-03**: Max 50 steps per task — failure if `task_completed` not called or task not done properly
+- [x] **AGT-01**: Agent runs autonomously in think → act → observe loop via DeepSeek V3.2 Reasoner (api.deepseek.com, OpenAI-compatible endpoint)
+- [x] **AGT-02**: Agent has `task_completed(success, summary)` tool to end its run
+- [x] **AGT-03**: Max 50 steps per task — failure if `task_completed` not called or task not done properly
 - [ ] **AGT-04**: Agent prompt includes retrieved skills from library when available
-- [ ] **AGT-05**: Agent is told it's running autonomously with no user — must act independently
+- [x] **AGT-05**: Agent is told it's running autonomously with no user — must act independently
 
 ### Trajectory Recording
 
-- [ ] **TRJ-01**: Full trajectory captured per task: each step's thought, action, observation, and final outcome
-- [ ] **TRJ-02**: Trajectory includes step count, success/failure status, and wall-clock duration
-- [ ] **TRJ-03**: Trajectories persisted to disk for teacher analysis
+- [x] **TRJ-01**: Full trajectory captured per task: each step's thought, action, observation, and final outcome
+- [x] **TRJ-02**: Trajectory includes step count, success/failure status, and wall-clock duration
+- [x] **TRJ-03**: Trajectories persisted to disk for teacher analysis
 
 ### Skill Library
 
@@ -91,16 +91,16 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ENV-01 | Phase 1 | Pending |
-| ENV-02 | Phase 1 | Pending |
-| ENV-03 | Phase 1 | Pending |
-| AGT-01 | Phase 1 | Pending |
-| AGT-02 | Phase 1 | Pending |
-| AGT-03 | Phase 1 | Pending |
-| AGT-05 | Phase 1 | Pending |
-| TRJ-01 | Phase 1 | Pending |
-| TRJ-02 | Phase 1 | Pending |
-| TRJ-03 | Phase 1 | Pending |
+| ENV-01 | Phase 1 | Done |
+| ENV-02 | Phase 1 | Done |
+| ENV-03 | Phase 1 | Done |
+| AGT-01 | Phase 1 | Done |
+| AGT-02 | Phase 1 | Done |
+| AGT-03 | Phase 1 | Done |
+| AGT-05 | Phase 1 | Done |
+| TRJ-01 | Phase 1 | Done |
+| TRJ-02 | Phase 1 | Done |
+| TRJ-03 | Phase 1 | Done |
 | SKL-01 | Phase 2 | Pending |
 | SKL-02 | Phase 2 | Pending |
 | SKL-03 | Phase 2 | Pending |

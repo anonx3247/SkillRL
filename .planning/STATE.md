@@ -6,34 +6,29 @@ See: .planning/PROJECT.md (updated 2026-02-11)
 
 **Core value:** Demonstrate that a frozen LLM + an evolving skill library can drive ALFWorld performance improvements without weight updates
 
-**Current focus:** Phase 1 - Foundation & Agent Loop
+**Current focus:** Phase 2 - Skill System & Evaluation
 
 ## Current Position
 
-Phase: 1 of 3 (Foundation & Agent Loop)
-Plan: 2 of TBD in current phase
-Status: In progress
-Last activity: 2026-02-11 — Completed 01-02-PLAN.md (ALFWorld FastMCP wrapper)
+Phase: 2 of 3 (Skill System & Evaluation)
+Plan: 0 of TBD in current phase
+Status: Not started (Phase 1 complete)
+Last activity: 2026-02-11 — Completed Phase 1 (all 3 plans)
 
-Progress: [██░░░░░░░░] 20%
+Progress: [████░░░░░░] 33%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 8.9 min
-- Total execution time: 0.30 hours
+- Total plans completed: 3
+- Average duration: ~16 min
+- Total execution time: ~0.8 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| Phase 1 | 2 | 17.7 min | 8.9 min |
-
-**Recent Trend:**
-- Last completed: 01-02 (13.6 min)
-- Previous: 01-01 (3.4 min)
-- Trend: Slowed by ALFWorld debugging (TextWorld bug)
+| Phase 1 | 3 | ~48 min | ~16 min |
 
 *Updated after each plan completion*
 
@@ -57,32 +52,36 @@ Recent decisions affecting current work:
 - JSONL format for trajectories — Streaming reads and atomic appends without full file parsing
 
 **From 01-02:**
-- Monkey-patch TextWorld EvalSymbol to fix missing 'r' variable bug — Enables ALFWorld reset() to work
 - Module-level env_manager instance (not FastMCP lifespan) — Workaround for FastMCP bug #1115
 - Return only observation strings from tools — Agent should not see privileged state (score, done flags)
 
+**From 01-03:**
+- Use deepseek-chat for tool calling, NOT deepseek-reasoner (no function calling support)
+- Agent loop calls env_manager.step() directly (Approach A), not via MCP
+- ALFWorld commands: `take X from Y` (not `take X`), `move X to Y` (not `put X in/on Y`)
+- Minimal system prompt — no strategy hints; let skill library learn over time
+- Python 3.14 breaks TextWorld locals().update() + eval() — fixed with direct eval(expr, globals, locals)
+
 ### Pending Todos
 
-None yet.
+None.
 
 ### Blockers/Concerns
 
-**Phase 1 - Resolved:**
-- ~~ALFWorld Python 3.14 incompatibility~~ — ALFWorld 0.4.2 works on Python 3.14 (auto-fixed during 01-02)
-- ~~FastMCP Python SDK API~~ — Verified fastmcp>=2.14.5 works with @mcp.tool decorator pattern (01-02)
-- ~~ALFWorld observation format~~ — Confirmed natural language strings only in tool returns (01-02)
+**Phase 1 - All Resolved:**
+- ~~ALFWorld Python 3.14 incompatibility~~ — Works with monkey-patch
+- ~~FastMCP Python SDK API~~ — Verified fastmcp>=2.14.5 works
+- ~~TextWorld grammar/eval bug~~ — Fixed: pass variables directly to eval() as locals dict
+- ~~ALFWorld command format~~ — Discovered: take X from Y, move X to Y
+- ~~DeepSeek tool calling~~ — Verified: use deepseek-chat model, works with OpenAI function-calling format
 
-**Phase 1 - Known Issues:**
-- **TextWorld grammar bug:** Intro template uses {r.name} but 'r' not in eval context → Fixed with monkey-patch in env_manager.py
-- **FastMCP lifespan bug #1115:** Lifespan runs per-request not at startup → Workaround: module-level env_manager
-
-**Phase 1 - Pending verification:**
-- DeepSeek V3.2 Reasoner specifics (rate limits, context window, tool call format) — Will verify in 01-03 or 01-04
+**Known Issues (non-blocking):**
+- FastMCP lifespan bug #1115 — Workaround in place (module-level env_manager)
 
 ## Session Continuity
 
-Last session: 2026-02-11 (plan 01-02 execution)
-Stopped at: Completed 01-02 (ALFWorld FastMCP wrapper with 12 tools)
+Last session: 2026-02-11 (Phase 1 complete)
+Stopped at: Phase 1 wrap-up complete
 Resume file: None
 
-**Next action:** Continue with next plan in Phase 1 (likely agent loop or DeepSeek integration)
+**Next action:** Plan Phase 2 (Skill System & Evaluation) — `/gsd:plan-phase 2`
