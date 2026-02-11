@@ -11,25 +11,25 @@ See: .planning/PROJECT.md (updated 2026-02-11)
 ## Current Position
 
 Phase: 2 of 3 (Skill System & Evaluation)
-Plan: 1 of TBD in current phase
+Plan: 2 of TBD in current phase
 Status: In progress
-Last activity: 2026-02-11 — Completed 02-01-PLAN.md
+Last activity: 2026-02-11 — Completed 02-02-PLAN.md
 
-Progress: [████░░░░░░] 40%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: ~12 min
-- Total execution time: ~1.0 hours
+- Total plans completed: 5
+- Average duration: ~11 min
+- Total execution time: ~1.1 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | Phase 1 | 3 | ~48 min | ~16 min |
-| Phase 2 | 1 | ~5 min | ~5 min |
+| Phase 2 | 2 | ~10 min | ~5 min |
 
 *Updated after each plan completion*
 
@@ -70,6 +70,13 @@ Recent decisions affecting current work:
 - Prompt injection via string replacement between tools and instructions
 - Module-level MCP library instance follows environment server pattern
 
+**From 02-02:**
+- Each concurrent worker creates its own EnvManager (ALFWorld has global state)
+- Atomic checkpoint writes using temp + fsync + os.replace + symlink pattern
+- Metrics computed post-hoc from trajectories (not during execution)
+- CLI restructured with subcommands for extensibility (run, evaluate)
+- Iteration 0 baseline runs with empty skill library (no skills retrieved)
+
 ### Pending Todos
 
 None.
@@ -89,7 +96,7 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-11
-Stopped at: Completed 02-01-PLAN.md
+Stopped at: Completed 02-02-PLAN.md
 Resume file: None
 
-**Next action:** Continue Phase 2 execution — execute next plan when ready
+**Next action:** Ready for iteration 0 baseline evaluation (can run manually or create Plan 02-03)
