@@ -73,10 +73,12 @@ Plans:
   4. Skill pruning removes unhelpful skills after sufficient iterations based on usage tracking
   5. W&B logs performance curves (success rate, avg steps over iterations), skill library state, and per-subtask success rates each iteration
 
-**Plans**: TBD (1-3 plans)
+**Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: TBD during planning
+- [ ] 03-01-PLAN.md — Teacher analysis system: trajectory analysis via DeepSeek, skill proposals with generality enforcement
+- [ ] 03-02-PLAN.md — W&B experiment tracking: metrics logging, per-subtask breakdowns, teacher decisions tables
+- [ ] 03-03-PLAN.md — Evolution loop: evaluate-analyze-update cycle, convergence detection, CLI evolve command
 
 ## Progress
 
@@ -87,4 +89,4 @@ Phases execute in numeric order: 1 → 2 → 3
 |-------|----------------|--------|-----------|
 | 1. Foundation & Agent Loop | 3/3 | Complete | 2026-02-11 |
 | 2. Skill System & Evaluation | 2/2 | Complete | 2026-02-11 |
-| 3. Teacher & Evolution | 0/TBD | Not started | - |
+| 3. Teacher & Evolution | 0/3 | Not started | - |
