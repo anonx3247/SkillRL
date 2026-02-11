@@ -11,24 +11,25 @@ See: .planning/PROJECT.md (updated 2026-02-11)
 ## Current Position
 
 Phase: 2 of 3 (Skill System & Evaluation)
-Plan: 0 of TBD in current phase
-Status: Not started (Phase 1 complete)
-Last activity: 2026-02-11 — Completed Phase 1 (all 3 plans)
+Plan: 1 of TBD in current phase
+Status: In progress
+Last activity: 2026-02-11 — Completed 02-01-PLAN.md
 
-Progress: [████░░░░░░] 33%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: ~16 min
-- Total execution time: ~0.8 hours
+- Total plans completed: 4
+- Average duration: ~12 min
+- Total execution time: ~1.0 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | Phase 1 | 3 | ~48 min | ~16 min |
+| Phase 2 | 1 | ~5 min | ~5 min |
 
 *Updated after each plan completion*
 
@@ -62,6 +63,13 @@ Recent decisions affecting current work:
 - Minimal system prompt — no strategy hints; let skill library learn over time
 - Python 3.14 breaks TextWorld locals().update() + eval() — fixed with direct eval(expr, globals, locals)
 
+**From 02-01:**
+- Skill encoding: `{name}: {principle}. {when_to_apply}` captures full semantics for embedding
+- Double normalization (encode + FAISS) ensures proper cosine similarity via dot product
+- Empty library returns empty list gracefully — no crashes on iteration 0
+- Prompt injection via string replacement between tools and instructions
+- Module-level MCP library instance follows environment server pattern
+
 ### Pending Todos
 
 None.
@@ -80,8 +88,8 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-11 (Phase 1 complete)
-Stopped at: Phase 1 wrap-up complete
+Last session: 2026-02-11
+Stopped at: Completed 02-01-PLAN.md
 Resume file: None
 
-**Next action:** Plan Phase 2 (Skill System & Evaluation) — `/gsd:plan-phase 2`
+**Next action:** Continue Phase 2 execution — execute next plan when ready
