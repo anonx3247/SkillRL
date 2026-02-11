@@ -1,23 +1,8 @@
 # SkillRL: Evolving Agents via Recursive Skill-Augmented Reinforcement Learning
 
-<div align="center">
-
-Bridging the gap between raw experience and policy improvement through automatic skill discovery.
-
-</div>
-
-<p align="center">
-<img src="figs/pipeline.png" width="80%" alt="SKILLRL Pipeline Overview">
-</p>
-
-## News
-
-- **[02/11/2026]** Frozen-model ablation reaches **93.28%** on ALFWorld (134 tasks) after 2 evolution iterations.
-- **[02/10/2026]** SkillRL paper was released on [arXiv](https://arxiv.org/abs/2602.08234)!
-
 ## Overview
 
-This repository is a **frozen-model ablation** of the [SkillRL paper](https://arxiv.org/abs/2602.08234). The original paper combines skill evolution *with* GRPO fine-tuning to achieve 89.9% on ALFWorld. We isolate a single question:
+This repository is a **frozen-model ablation** of the [SkillRL paper](https://arxiv.org/abs/2602.08234). The original paper combines skill evolution *with* GRPO fine-tuning on ALFWorld. We isolate a single question:
 
 > **Can an evolving skill library alone — with no weight updates — match or exceed the full pipeline?**
 
@@ -31,7 +16,6 @@ A frozen DeepSeek V3.2 executes all 134 ALFWorld tasks. Between iterations, a te
 | **Iteration 1** | 89.55% (120/134) | 96.77% | 90.48% | 86.96% | 94.44% | 95.83% | 64.71% | 607s |
 | **Iteration 2** | **93.28%** (125/134) | 93.55% | 95.24% | 95.65% | **100.00%** | 87.50% | 88.24% | 703s |
 
-For reference, the full SkillRL paper (with GRPO training) reports 89.9% on ALFWorld. This frozen-model ablation surpasses that with skill evolution alone.
 
 ## How It Differs from the Paper
 
@@ -86,6 +70,14 @@ python -m src.main evaluate
 # Resume from a checkpoint
 python -m src.main evolve --resume
 ```
+
+## Next Steps
+
+- **SWE-Bench**: ALFWorld is a relatively constrained environment — the original paper's 32B Qwen model is well-matched to it. Applying this frozen-model skill evolution approach to SWE-Bench would be a more interesting test, where the complexity of real-world software engineering tasks better exercises a capable model like DeepSeek V3.2.
+
+- **Skill library capping**: Currently there is no cap on the number of skills added per iteration. The teacher freely updates and adds skills, which is inefficient and risks filling the prompt with low-value skills. A bounded library with pruning or replacement policies would keep context usage tight.
+
+- **Teacher sampling**: The teacher currently runs on every single trajectory. Running on all failures plus a small sample of successes — or sampling from the full set — could achieve comparable skill quality at a fraction of the cost.
 
 ## Citation
 
