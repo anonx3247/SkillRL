@@ -91,44 +91,49 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ENV-01 | - | Pending |
-| ENV-02 | - | Pending |
-| ENV-03 | - | Pending |
-| AGT-01 | - | Pending |
-| AGT-02 | - | Pending |
-| AGT-03 | - | Pending |
-| AGT-04 | - | Pending |
-| AGT-05 | - | Pending |
-| TRJ-01 | - | Pending |
-| TRJ-02 | - | Pending |
-| TRJ-03 | - | Pending |
-| SKL-01 | - | Pending |
-| SKL-02 | - | Pending |
-| SKL-03 | - | Pending |
-| SKL-04 | - | Pending |
-| SKL-05 | - | Pending |
-| TCH-01 | - | Pending |
-| TCH-02 | - | Pending |
-| TCH-03 | - | Pending |
-| TCH-04 | - | Pending |
-| TCH-05 | - | Pending |
-| TCH-06 | - | Pending |
-| EVL-01 | - | Pending |
-| EVL-02 | - | Pending |
-| EVL-03 | - | Pending |
-| EVL-04 | - | Pending |
-| EVL-05 | - | Pending |
-| EVL-06 | - | Pending |
-| LOG-01 | - | Pending |
-| LOG-02 | - | Pending |
-| LOG-03 | - | Pending |
-| LOG-04 | - | Pending |
+| ENV-01 | Phase 1 | Pending |
+| ENV-02 | Phase 1 | Pending |
+| ENV-03 | Phase 1 | Pending |
+| AGT-01 | Phase 1 | Pending |
+| AGT-02 | Phase 1 | Pending |
+| AGT-03 | Phase 1 | Pending |
+| AGT-05 | Phase 1 | Pending |
+| TRJ-01 | Phase 1 | Pending |
+| TRJ-02 | Phase 1 | Pending |
+| TRJ-03 | Phase 1 | Pending |
+| SKL-01 | Phase 2 | Pending |
+| SKL-02 | Phase 2 | Pending |
+| SKL-03 | Phase 2 | Pending |
+| SKL-04 | Phase 2 | Pending |
+| SKL-05 | Phase 2 | Pending |
+| AGT-04 | Phase 2 | Pending |
+| EVL-01 | Phase 2 | Pending |
+| EVL-02 | Phase 2 | Pending |
+| EVL-03 | Phase 2 | Pending |
+| EVL-04 | Phase 2 | Pending |
+| EVL-05 | Phase 2 | Pending |
+| EVL-06 | Phase 2 | Pending |
+| TCH-01 | Phase 3 | Pending |
+| TCH-02 | Phase 3 | Pending |
+| TCH-03 | Phase 3 | Pending |
+| TCH-04 | Phase 3 | Pending |
+| TCH-05 | Phase 3 | Pending |
+| TCH-06 | Phase 3 | Pending |
+| LOG-01 | Phase 3 | Pending |
+| LOG-02 | Phase 3 | Pending |
+| LOG-03 | Phase 3 | Pending |
+| LOG-04 | Phase 3 | Pending |
 
 **Coverage:**
 - v1 requirements: 32 total
-- Mapped to phases: 0
-- Unmapped: 32
+- Mapped to phases: 32 (100%)
+- Unmapped: 0
+
+**Phase Distribution:**
+- Phase 1 (Foundation & Agent Loop): 10 requirements
+- Phase 2 (Skill System & Evaluation): 12 requirements
+- Phase 3 (Teacher & Evolution): 10 requirements
 
 ---
 *Requirements defined: 2026-02-11*
-*Last updated: 2026-02-11 after initial definition*
+*Last updated: 2026-02-11 after roadmap creation*
