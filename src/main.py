@@ -9,6 +9,7 @@ from pathlib import Path
 from src.agent import DeepSeekClient, build_tools_spec, format_step, run_task
 from src.environment.env_manager import EnvManager
 from src.evaluation.orchestrator import EvaluationOrchestrator
+from src.evolution.loop import EvolutionLoop
 from src.trajectory.storage import append_trajectory
 
 
@@ -129,6 +130,41 @@ async def run_evaluation(args):
     print(f"Results saved to: {args.output_dir}")
 
 
+async def run_evolution_loop(args):
+    """Run full skill evolution loop."""
+    # Check for API key
+    if not os.environ.get("DEEPSEEK_API_KEY"):
+        print("Error: DEEPSEEK_API_KEY environment variable not set", file=sys.stderr)
+        print("\nTo get an API key:", file=sys.stderr)
+        print("1. Visit https://platform.deepseek.com/api_keys", file=sys.stderr)
+        print("2. Create or copy your API key", file=sys.stderr)
+        print("3. Set it in your environment: export DEEPSEEK_API_KEY=your-key-here", file=sys.stderr)
+        sys.exit(1)
+
+    # Check for WANDB_API_KEY
+    if not os.environ.get("WANDB_API_KEY"):
+        print("Warning: WANDB_API_KEY not set. W&B logging may require login.", file=sys.stderr)
+        print("Set it via: export WANDB_API_KEY=your-key-here", file=sys.stderr)
+
+    loop = EvolutionLoop(
+        skill_library_path=args.skill_library,
+        output_dir=args.output_dir,
+        max_iterations=args.max_iterations,
+        patience=args.patience,
+        min_delta=args.min_delta,
+        max_concurrent=args.max_concurrent,
+        max_steps=args.max_steps,
+        top_k_skills=args.top_k,
+        wandb_project=args.wandb_project,
+    )
+
+    try:
+        await loop.run()
+    except KeyboardInterrupt:
+        print("\n\nInterrupted by user. Exiting...")
+        sys.exit(0)
+
+
 async def main():
     """Main async execution function with subcommands."""
     parser = argparse.ArgumentParser(
@@ -208,14 +244,75 @@ async def main():
         help="Number of skills to retrieve per task (default: 3)",
     )
 
+    # 'evolve' subcommand - full skill evolution loop
+    evolve_parser = subparsers.add_parser(
+        "evolve",
+        help="Run full skill evolution loop (evaluate -> teach -> update -> repeat)"
+    )
+    evolve_parser.add_argument(
+        "--max-iterations",
+        type=int,
+        default=20,
+        help="Maximum evolution iterations (default: 20)",
+    )
+    evolve_parser.add_argument(
+        "--patience",
+        type=int,
+        default=5,
+        help="Iterations without improvement before early stopping (default: 5)",
+    )
+    evolve_parser.add_argument(
+        "--min-delta",
+        type=float,
+        default=0.01,
+        help="Minimum improvement to count as progress (default: 0.01)",
+    )
+    evolve_parser.add_argument(
+        "--max-concurrent",
+        type=int,
+        default=10,
+        help="Maximum concurrent workers (default: 10)",
+    )
+    evolve_parser.add_argument(
+        "--max-steps",
+        type=int,
+        default=50,
+        help="Maximum steps per task (default: 50)",
+    )
+    evolve_parser.add_argument(
+        "--output-dir",
+        type=str,
+        default="data/experiments",
+        help="Output directory (default: data/experiments)",
+    )
+    evolve_parser.add_argument(
+        "--skill-library",
+        type=str,
+        default="data/skills/skills.json",
+        help="Path to skill library JSON (default: data/skills/skills.json)",
+    )
+    evolve_parser.add_argument(
+        "--top-k",
+        type=int,
+        default=3,
+        help="Number of skills to retrieve per task (default: 3)",
+    )
+    evolve_parser.add_argument(
+        "--wandb-project",
+        type=str,
+        default="skillrl-evolution",
+        help="W&B project name (default: skillrl-evolution)",
+    )
+
     args = parser.parse_args()
 
     # Handle no command (backward compatibility - default to run with task-index 0)
     if args.command is None:
-        print("No command specified. Use 'run' or 'evaluate'.")
+        print("No command specified. Use 'run', 'evaluate', or 'evolve'.")
         print("\nExamples:")
         print("  python -m src.main run --task-index 0")
         print("  python -m src.main evaluate --iteration 0")
+        print("  python -m src.main evolve --max-iterations 20")
         parser.print_help()
         sys.exit(1)
 
@@ -224,6 +321,8 @@ async def main():
         await run_single_task(args)
     elif args.command == "evaluate":
         await run_evaluation(args)
+    elif args.command == "evolve":
+        await run_evolution_loop(args)
 
 
 if __name__ == "__main__":
