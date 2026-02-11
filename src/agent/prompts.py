@@ -1,5 +1,8 @@
 """Agent system prompts and templates."""
 
+from src.skills.models import Skill
+
+
 AUTONOMOUS_AGENT_PROMPT = """You are an autonomous agent in an ALFWorld household simulation.
 
 Available Tools:
@@ -24,3 +27,28 @@ Instructions:
 5. If an action fails ("Nothing happens"), reconsider your approach.
 6. Call task_completed when done.
 """
+
+
+def build_prompt_with_skills(retrieved_skills: list[Skill] | None = None) -> str:
+    """Build agent prompt with optional skill injection.
+
+    Args:
+        retrieved_skills: List of relevant skills to inject into prompt
+
+    Returns:
+        System prompt with skills section if skills provided, else base prompt
+    """
+    if not retrieved_skills:
+        return AUTONOMOUS_AGENT_PROMPT
+
+    skills_section = "\n\nRelevant Skills (learned from past experience):\n"
+    for i, skill in enumerate(retrieved_skills, 1):
+        skills_section += f"\n{i}. {skill.name}\n"
+        skills_section += f"   Principle: {skill.principle}\n"
+        skills_section += f"   When to apply: {skill.when_to_apply}\n"
+    skills_section += "\nConsider these skills when planning your approach.\n"
+
+    return AUTONOMOUS_AGENT_PROMPT.replace(
+        "Instructions:",
+        skills_section + "\nInstructions:"
+    )
