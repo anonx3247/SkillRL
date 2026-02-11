@@ -91,6 +91,9 @@ class EvaluationOrchestrator:
         )
         print(f"Completed {len(trajectories)} tasks")
 
+        # Persist usage tracking data
+        skill_library.save()
+
         # Step 4: Compute metrics
         print("\nStep 4: Computing metrics...")
         metrics = compute_metrics(trajectories, iteration, skills_per_task)
@@ -192,7 +195,7 @@ class EvaluationOrchestrator:
                     observation, info = env_manager.reset()
 
                 # Retrieve skills for this task
-                retrieved_skills = retriever.retrieve(task_description, self.top_k_skills)
+                retrieved_skills = retriever.retrieve(task_description, self.top_k_skills, current_iteration=iteration)
 
                 # Run task
                 trajectory = await run_task(

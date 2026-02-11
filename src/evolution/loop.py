@@ -115,6 +115,9 @@ class EvolutionLoop:
                 print(f"Running evaluation with {len(skill_library)} skills...")
                 metrics = await orchestrator.run_iteration(iteration)
 
+                # Reload library to pick up usage tracking data from evaluation
+                skill_library.load()
+
                 # Step 2: Log to W&B
                 skill_names = [s.name for s in skill_library.get_all_skills()]
                 tracker.log_iteration(iteration, metrics, len(skill_library), skill_names)

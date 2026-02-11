@@ -62,12 +62,13 @@ class SkillRetriever:
 
         self.indexed_skills = skills
 
-    def retrieve(self, query: str, top_k: int = 3) -> list[Skill]:
+    def retrieve(self, query: str, top_k: int = 3, current_iteration: int = 0) -> list[Skill]:
         """Retrieve most relevant skills for a query.
 
         Args:
             query: Query text
             top_k: Number of skills to retrieve
+            current_iteration: Current iteration number for usage tracking
 
         Returns:
             List of most relevant skills (up to top_k)
@@ -93,5 +94,10 @@ class SkillRetriever:
         # Search index
         distances, indices = self.index.search(query_embedding, top_k)
 
-        # Return corresponding skills
-        return [self.indexed_skills[i] for i in indices[0]]
+        # Retrieve skills and update usage tracking
+        results = [self.indexed_skills[i] for i in indices[0]]
+        for skill in results:
+            skill.usage_count += 1
+            skill.last_used_iteration = current_iteration
+
+        return results
