@@ -8,39 +8,12 @@ from pathlib import Path
 
 from src.agent import DeepSeekClient, build_tools_spec, format_step, run_task
 from src.environment.env_manager import EnvManager
+from src.evaluation.orchestrator import EvaluationOrchestrator
 from src.trajectory.storage import append_trajectory
 
 
-async def main():
-    """Main async execution function."""
-    # Parse arguments
-    parser = argparse.ArgumentParser(description="Run agent on ALFWorld tasks")
-    parser.add_argument(
-        "--task-index",
-        type=int,
-        default=0,
-        help="Task index to run (default: 0)",
-    )
-    parser.add_argument(
-        "--max-steps",
-        type=int,
-        default=50,
-        help="Maximum steps per task (default: 50)",
-    )
-    parser.add_argument(
-        "--output-dir",
-        type=str,
-        default="data/trajectories",
-        help="Output directory for trajectories (default: data/trajectories)",
-    )
-    parser.add_argument(
-        "--agent-index",
-        type=int,
-        default=0,
-        help="Agent index prefix for display (default: 0)",
-    )
-    args = parser.parse_args()
-
+async def run_single_task(args):
+    """Run agent on a single task (original functionality)."""
     # Check for API key
     if not os.environ.get("DEEPSEEK_API_KEY"):
         print("Error: DEEPSEEK_API_KEY environment variable not set", file=sys.stderr)
@@ -122,6 +95,135 @@ async def main():
     append_trajectory(trajectory, trajectory_file)
 
     print("\n✓ Complete!")
+
+
+async def run_evaluation(args):
+    """Run full 134-task evaluation with skill retrieval."""
+    # Check for API key
+    if not os.environ.get("DEEPSEEK_API_KEY"):
+        print("Error: DEEPSEEK_API_KEY environment variable not set", file=sys.stderr)
+        print("\nTo get an API key:", file=sys.stderr)
+        print("1. Visit https://platform.deepseek.com/api_keys", file=sys.stderr)
+        print("2. Create or copy your API key", file=sys.stderr)
+        print("3. Set it in your environment: export DEEPSEEK_API_KEY=your-key-here", file=sys.stderr)
+        sys.exit(1)
+
+    # Create orchestrator
+    orchestrator = EvaluationOrchestrator(
+        skill_library_path=args.skill_library,
+        output_dir=args.output_dir,
+        max_concurrent=args.max_concurrent,
+        max_steps=args.max_steps,
+        top_k_skills=args.top_k,
+    )
+
+    # Run iteration
+    try:
+        metrics = await orchestrator.run_iteration(args.iteration)
+    except KeyboardInterrupt:
+        print("\n\nInterrupted by user. Exiting...")
+        sys.exit(0)
+
+    # Final summary
+    print("\nEvaluation complete!")
+    print(f"Results saved to: {args.output_dir}")
+
+
+async def main():
+    """Main async execution function with subcommands."""
+    parser = argparse.ArgumentParser(
+        description="SkillRL: Frozen LLM + evolving skill library on ALFWorld"
+    )
+    subparsers = parser.add_subparsers(dest="command", help="Command to run")
+
+    # 'run' subcommand - single task execution
+    run_parser = subparsers.add_parser(
+        "run",
+        help="Run agent on a single ALFWorld task"
+    )
+    run_parser.add_argument(
+        "--task-index",
+        type=int,
+        default=0,
+        help="Task index to run (default: 0)",
+    )
+    run_parser.add_argument(
+        "--max-steps",
+        type=int,
+        default=50,
+        help="Maximum steps per task (default: 50)",
+    )
+    run_parser.add_argument(
+        "--output-dir",
+        type=str,
+        default="data/trajectories",
+        help="Output directory for trajectories (default: data/trajectories)",
+    )
+    run_parser.add_argument(
+        "--agent-index",
+        type=int,
+        default=0,
+        help="Agent index prefix for display (default: 0)",
+    )
+
+    # 'evaluate' subcommand - full 134-task evaluation
+    eval_parser = subparsers.add_parser(
+        "evaluate",
+        help="Run full 134-task evaluation with skill retrieval"
+    )
+    eval_parser.add_argument(
+        "--iteration",
+        type=int,
+        default=0,
+        help="Iteration number (default: 0)",
+    )
+    eval_parser.add_argument(
+        "--max-concurrent",
+        type=int,
+        default=10,
+        help="Maximum concurrent workers (default: 10)",
+    )
+    eval_parser.add_argument(
+        "--max-steps",
+        type=int,
+        default=50,
+        help="Maximum steps per task (default: 50)",
+    )
+    eval_parser.add_argument(
+        "--output-dir",
+        type=str,
+        default="data/experiments",
+        help="Output directory for results (default: data/experiments)",
+    )
+    eval_parser.add_argument(
+        "--skill-library",
+        type=str,
+        default="data/skills/skills.json",
+        help="Path to skill library JSON (default: data/skills/skills.json)",
+    )
+    eval_parser.add_argument(
+        "--top-k",
+        type=int,
+        default=3,
+        help="Number of skills to retrieve per task (default: 3)",
+    )
+
+    args = parser.parse_args()
+
+    # Handle no command (backward compatibility - default to run with task-index 0)
+    if args.command is None:
+        print("No command specified. Use 'run' or 'evaluate'.")
+        print("\nExamples:")
+        print("  python -m src.main run --task-index 0")
+        print("  python -m src.main evaluate --iteration 0")
+        parser.print_help()
+        sys.exit(1)
+
+    # Dispatch to appropriate handler
+    if args.command == "run":
+        await run_single_task(args)
+    elif args.command == "evaluate":
+        await run_evaluation(args)
 
 
 if __name__ == "__main__":
