@@ -9,6 +9,9 @@ dependencies = [
     # "alfworld",  # NOTE: Temporarily commented - Python 3.14 incompatible (fast-downward-textworld build fails)
     "tenacity",
     "pydantic>=2.0",
+    "sentence-transformers>=3.4",
+    "faiss-cpu>=1.13",
+    "tqdm>=4.66",
 ]
 
 [project.optional-dependencies]
