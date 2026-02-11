@@ -11,28 +11,29 @@ See: .planning/PROJECT.md (updated 2026-02-11)
 ## Current Position
 
 Phase: 1 of 3 (Foundation & Agent Loop)
-Plan: 1 of TBD in current phase
+Plan: 2 of TBD in current phase
 Status: In progress
-Last activity: 2026-02-11 — Completed 01-01-PLAN.md (project foundation)
+Last activity: 2026-02-11 — Completed 01-02-PLAN.md (ALFWorld FastMCP wrapper)
 
-Progress: [█░░░░░░░░░] 10%
+Progress: [██░░░░░░░░] 20%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 3.4 min
-- Total execution time: 0.06 hours
+- Total plans completed: 2
+- Average duration: 8.9 min
+- Total execution time: 0.30 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| Phase 1 | 1 | 3.4 min | 3.4 min |
+| Phase 1 | 2 | 17.7 min | 8.9 min |
 
 **Recent Trend:**
-- Last completed: 01-01 (3.4 min)
-- Trend: Starting strong
+- Last completed: 01-02 (13.6 min)
+- Previous: 01-01 (3.4 min)
+- Trend: Slowed by ALFWorld debugging (TextWorld bug)
 
 *Updated after each plan completion*
 
@@ -55,30 +56,33 @@ Recent decisions affecting current work:
 - Atomic write pattern with os.replace — Cross-platform crash resilience for JSONL appends
 - JSONL format for trajectories — Streaming reads and atomic appends without full file parsing
 
+**From 01-02:**
+- Monkey-patch TextWorld EvalSymbol to fix missing 'r' variable bug — Enables ALFWorld reset() to work
+- Module-level env_manager instance (not FastMCP lifespan) — Workaround for FastMCP bug #1115
+- Return only observation strings from tools — Agent should not see privileged state (score, done flags)
+
 ### Pending Todos
 
 None yet.
 
 ### Blockers/Concerns
 
-**Phase 1 - Active Blocker:**
-- **ALFWorld Python 3.14 incompatibility:** fast-downward-textworld fails to build on Python 3.14 (subprocess FileNotFoundError). Need to either:
-  - Use Python 3.11-3.13 (recreate venv)
-  - Wait for package update
-  - Mock ALFWorld for early development
-  - Resolution needed before agent loop implementation
+**Phase 1 - Resolved:**
+- ~~ALFWorld Python 3.14 incompatibility~~ — ALFWorld 0.4.2 works on Python 3.14 (auto-fixed during 01-02)
+- ~~FastMCP Python SDK API~~ — Verified fastmcp>=2.14.5 works with @mcp.tool decorator pattern (01-02)
+- ~~ALFWorld observation format~~ — Confirmed natural language strings only in tool returns (01-02)
+
+**Phase 1 - Known Issues:**
+- **TextWorld grammar bug:** Intro template uses {r.name} but 'r' not in eval context → Fixed with monkey-patch in env_manager.py
+- **FastMCP lifespan bug #1115:** Lifespan runs per-request not at startup → Workaround: module-level env_manager
 
 **Phase 1 - Pending verification:**
-- FastMCP Python SDK current API (package name, decorator patterns, async support)
-- ALFWorld observation format configuration (natural language only, no privileged state)
-- DeepSeek V3.2 Reasoner specifics (rate limits, context window, tool call format)
-
-These will be addressed during Phase 1 planning via research-phase if needed.
+- DeepSeek V3.2 Reasoner specifics (rate limits, context window, tool call format) — Will verify in 01-03 or 01-04
 
 ## Session Continuity
 
-Last session: 2026-02-11 (plan 01-01 execution)
-Stopped at: Completed 01-01 (project foundation with trajectory storage)
+Last session: 2026-02-11 (plan 01-02 execution)
+Stopped at: Completed 01-02 (ALFWorld FastMCP wrapper with 12 tools)
 Resume file: None
 
-**Next action:** Continue with next plan in Phase 1 (likely environment wrapper or agent loop)
+**Next action:** Continue with next plan in Phase 1 (likely agent loop or DeepSeek integration)
