@@ -11,18 +11,18 @@ See: .planning/PROJECT.md (updated 2026-02-11)
 ## Current Position
 
 Phase: 3 of 3 (Teacher & Evolution) — Complete
-Plan: 3 of 3 in current phase
-Status: All plans complete
-Last activity: 2026-02-11 — Completed 03-03-PLAN.md (Evolution loop orchestration)
+Plan: 4 of 3 in current phase (3 planned + 1 gap closure)
+Status: All plans complete (including gap closure)
+Last activity: 2026-02-11 — Completed 03-04-PLAN.md (Usage tracking wiring)
 
 Progress: [██████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
-- Average duration: ~8 min
-- Total execution time: ~1.3 hours
+- Total plans completed: 9
+- Average duration: ~7.3 min
+- Total execution time: ~1.4 hours
 
 **By Phase:**
 
@@ -30,7 +30,7 @@ Progress: [██████████] 100%
 |-------|-------|-------|----------|
 | Phase 1 | 3 | ~48 min | ~16 min |
 | Phase 2 | 2 | ~10 min | ~5 min |
-| Phase 3 | 3 | ~8 min | ~2.7 min |
+| Phase 3 | 4 | ~10 min | ~2.5 min |
 
 *Updated after each plan completion*
 
@@ -99,6 +99,11 @@ Recent decisions affecting current work:
 - Manual Step reconstruction for Trajectory loading (no from_dict method)
 - EvolutionLoop defers component creation to run() (config/runtime separation)
 
+**From 03-04:**
+- Usage tracking via shared object references (safe in asyncio due to single-threaded execution)
+- Orchestrator persists usage data after evaluation, loop reloads to sync
+- Teacher receives usage stats in skill context for informed pruning decisions
+
 ### Pending Todos
 
 None.
@@ -118,8 +123,8 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-11
-Stopped at: Completed 03-03-PLAN.md (Phase 3 complete)
+Stopped at: Completed 03-04-PLAN.md (Gap closure: usage tracking wiring)
 Resume file: None
 
-**Next action:** All phases complete! Ready for experiment execution.
+**Next action:** All phases complete (including gap closure)! Ready for experiment execution.
 **Run:** `python -m src.main evolve --max-iterations 20` to start skill evolution experiment.
