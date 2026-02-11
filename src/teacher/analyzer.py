@@ -87,7 +87,10 @@ class TeacherAnalyzer:
 
             # Build context message with existing skills
             skill_context = "\n".join(
-                f"- {skill.name}: {skill.principle}"
+                f"- {skill.name}: {skill.principle} "
+                f"[usage: {skill.usage_count} retrievals, "
+                f"last used: iter {skill.last_used_iteration}, "
+                f"created: iter {skill.created_iteration}]"
                 for skill in existing_skills
             ) if existing_skills else "No skills in library yet."
 
@@ -97,6 +100,8 @@ class TeacherAnalyzer:
 Failed trajectories to analyze:
 
 {batch_text}
+
+Note: Usage statistics [usage: N retrievals, last used: iter M, created: iter K] show how often each skill was retrieved. Skills with 0 or very low retrievals after several iterations may not be relevant and could be candidates for removal.
 
 Propose skill library updates based on patterns in these failures."""
 
@@ -166,7 +171,10 @@ Propose skill library updates based on patterns in these failures."""
 
             # Build context message with existing skills
             skill_context = "\n".join(
-                f"- {skill.name}: {skill.principle}"
+                f"- {skill.name}: {skill.principle} "
+                f"[usage: {skill.usage_count} retrievals, "
+                f"last used: iter {skill.last_used_iteration}, "
+                f"created: iter {skill.created_iteration}]"
                 for skill in existing_skills
             ) if existing_skills else "No skills in library yet."
 
@@ -176,6 +184,8 @@ Propose skill library updates based on patterns in these failures."""
 Successful trajectories to analyze:
 
 {batch_text}
+
+Note: Usage statistics [usage: N retrievals, last used: iter M, created: iter K] show how often each skill was retrieved. Skills with 0 or very low retrievals after several iterations may not be relevant and could be candidates for removal.
 
 Propose skill library updates based on patterns in these successes."""
 
