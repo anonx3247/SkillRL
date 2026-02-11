@@ -53,10 +53,11 @@ Plans:
   5. State persists to disk with atomic writes (skill library, trajectories, iteration checkpoints) — experiment can stop and resume anytime
   6. Iteration 0 baseline (no skills) establishes MemRL comparison point
 
-**Plans**: TBD (1-3 plans)
+**Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: TBD during planning
+- [ ] 02-01-PLAN.md — Skill library system: data model, CRUD with atomic JSON persistence, semantic retrieval (sentence-transformers + FAISS), prompt injection
+- [ ] 02-02-PLAN.md — Parallel evaluation orchestrator: 134-task concurrent execution, metrics, checkpointing, CLI integration
 
 ### Phase 3: Teacher & Evolution
 **Goal**: Autonomous multi-iteration skill evolution with teacher analyzing failures and proposing library updates, tracked live in W&B.
@@ -85,5 +86,5 @@ Phases execute in numeric order: 1 → 2 → 3
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Agent Loop | 3/3 | Complete | 2026-02-11 |
-| 2. Skill System & Evaluation | 0/TBD | Not started | - |
+| 2. Skill System & Evaluation | 0/2 | Not started | - |
 | 3. Teacher & Evolution | 0/TBD | Not started | - |
