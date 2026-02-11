@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Agent Loop** - Environment integration, basic agent execution, trajectory logging
 - [x] **Phase 2: Skill System & Evaluation** - Skill library, semantic retrieval, full 134-task evaluation with parallel execution
-- [ ] **Phase 3: Teacher & Evolution** - Teacher distillation, autonomous skill evolution, W&B monitoring
+- [x] **Phase 3: Teacher & Evolution** - Teacher distillation, autonomous skill evolution, W&B monitoring
 
 ## Phase Details
 
@@ -79,7 +79,7 @@ Plans:
 - [x] 03-01-PLAN.md — Teacher analysis system: trajectory analysis via DeepSeek, skill proposals with generality enforcement
 - [x] 03-02-PLAN.md — W&B experiment tracking: metrics logging, per-subtask breakdowns, teacher decisions tables
 - [x] 03-03-PLAN.md — Evolution loop: evaluate-analyze-update cycle, convergence detection, CLI evolve command
-- [ ] 03-04-PLAN.md — Gap closure: wire usage tracking (usage_count, last_used_iteration) through retriever, orchestrator, and teacher
+- [x] 03-04-PLAN.md — Gap closure: wire usage tracking (usage_count, last_used_iteration) through retriever, orchestrator, and teacher
 
 ## Progress
 
@@ -90,4 +90,4 @@ Phases execute in numeric order: 1 → 2 → 3
 |-------|----------------|--------|-----------|
 | 1. Foundation & Agent Loop | 3/3 | Complete | 2026-02-11 |
 | 2. Skill System & Evaluation | 2/2 | Complete | 2026-02-11 |
-| 3. Teacher & Evolution | 3/4 | Gap closure | - |
+| 3. Teacher & Evolution | 4/4 | Complete | 2026-02-11 |

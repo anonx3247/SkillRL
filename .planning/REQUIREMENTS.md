@@ -35,12 +35,12 @@
 
 ### Teacher & Evolution
 
-- [ ] **TCH-01**: Teacher (same DeepSeek V3.2 Reasoner model) analyzes trajectories offline to distill skills
-- [ ] **TCH-02**: Success trajectories distilled into strategic patterns (what worked and why)
-- [ ] **TCH-03**: Failure trajectories distilled into lessons (what went wrong, what should have been done)
-- [ ] **TCH-04**: Skill generality enforced via prompt constraints — skills must be abstract transferable principles, never mention task-specific details, objects, locations, or answers
-- [ ] **TCH-05**: Recursive evolution: after each evaluation iteration, teacher analyzes failures and proposes new skills
-- [ ] **TCH-06**: Skill pruning: remove skills that aren't helping after sufficient iterations
+- [x] **TCH-01**: Teacher (same DeepSeek V3.2 Reasoner model) analyzes trajectories offline to distill skills
+- [x] **TCH-02**: Success trajectories distilled into strategic patterns (what worked and why)
+- [x] **TCH-03**: Failure trajectories distilled into lessons (what went wrong, what should have been done)
+- [x] **TCH-04**: Skill generality enforced via prompt constraints — skills must be abstract transferable principles, never mention task-specific details, objects, locations, or answers
+- [x] **TCH-05**: Recursive evolution: after each evaluation iteration, teacher analyzes failures and proposes new skills
+- [x] **TCH-06**: Skill pruning: remove skills that aren't helping after sufficient iterations
 
 ### Evaluation & Orchestration
 
@@ -53,10 +53,10 @@
 
 ### Logging & Visualization
 
-- [ ] **LOG-01**: W&B integration for live experiment logging
-- [ ] **LOG-02**: Performance curves logged to W&B: success rate and avg steps over iterations
-- [ ] **LOG-03**: Skill library state logged to W&B each iteration (full library contents visible in dashboard)
-- [ ] **LOG-04**: Per-subtask success rates logged to W&B
+- [x] **LOG-01**: W&B integration for live experiment logging
+- [x] **LOG-02**: Performance curves logged to W&B: success rate and avg steps over iterations
+- [x] **LOG-03**: Skill library state logged to W&B each iteration (full library contents visible in dashboard)
+- [x] **LOG-04**: Per-subtask success rates logged to W&B
 
 ## v2 Requirements
 
@@ -113,16 +113,16 @@
 | EVL-04 | Phase 2 | Complete |
 | EVL-05 | Phase 2 | Complete |
 | EVL-06 | Phase 2 | Complete |
-| TCH-01 | Phase 3 | Pending |
-| TCH-02 | Phase 3 | Pending |
-| TCH-03 | Phase 3 | Pending |
-| TCH-04 | Phase 3 | Pending |
-| TCH-05 | Phase 3 | Pending |
-| TCH-06 | Phase 3 | Pending |
-| LOG-01 | Phase 3 | Pending |
-| LOG-02 | Phase 3 | Pending |
-| LOG-03 | Phase 3 | Pending |
-| LOG-04 | Phase 3 | Pending |
+| TCH-01 | Phase 3 | Complete |
+| TCH-02 | Phase 3 | Complete |
+| TCH-03 | Phase 3 | Complete |
+| TCH-04 | Phase 3 | Complete |
+| TCH-05 | Phase 3 | Complete |
+| TCH-06 | Phase 3 | Complete |
+| LOG-01 | Phase 3 | Complete |
+| LOG-02 | Phase 3 | Complete |
+| LOG-03 | Phase 3 | Complete |
+| LOG-04 | Phase 3 | Complete |
 
 **Coverage:**
 - v1 requirements: 32 total
@@ -136,4 +136,4 @@
 
 ---
 *Requirements defined: 2026-02-11*
-*Last updated: 2026-02-11 after roadmap creation*
+*Last updated: 2026-02-11 after Phase 3 completion*
