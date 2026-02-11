@@ -76,7 +76,8 @@ class EvaluationOrchestrator:
         # Step 2: Load skill library + retriever
         print(f"\nStep 2: Loading skill library from {self.skill_library_path}...")
         skill_library = SkillLibrary(self.skill_library_path)
-        all_skills = skill_library.list_skills()
+        skill_library.load()
+        all_skills = skill_library.get_all_skills()
         print(f"Loaded {len(all_skills)} skills")
 
         retriever = SkillRetriever()
