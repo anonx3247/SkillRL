@@ -10,29 +10,85 @@ Bridging the gap between raw experience and policy improvement through automatic
 <img src="figs/pipeline.png" width="80%" alt="SKILLRL Pipeline Overview">
 </p>
 
-## 🔥 News
+## News
 
+- **[02/11/2026]** Frozen-model ablation reaches **93.28%** on ALFWorld (134 tasks) after 2 evolution iterations.
 - **[02/10/2026]** SkillRL paper was released on [arXiv](https://arxiv.org/abs/2602.08234)!
 
-## 📖 Overview
+## Overview
 
-SkillRL is a framework that enables LLM agents to learn high-level, reusable behavioral patterns from past experiences. While traditional memory-based methods store redundant and noisy raw trajectories, SKILLRL abstracts these into a hierarchical skill library.
+This repository is a **frozen-model ablation** of the [SkillRL paper](https://arxiv.org/abs/2602.08234). The original paper combines skill evolution *with* GRPO fine-tuning to achieve 89.9% on ALFWorld. We isolate a single question:
 
-## 🤖 Key Features
+> **Can an evolving skill library alone — with no weight updates — match or exceed the full pipeline?**
 
-- **Experience-based Skill Distillation**: Transforms successful trajectories into strategic patterns and failed ones into concise lessons from failure. 
+A frozen DeepSeek V3.2 executes all 134 ALFWorld tasks. Between iterations, a teacher LLM analyzes failed trajectories and distills new skills into a hierarchical library. The agent's weights never change; only its skill context evolves.
 
-- **Hierarchical SKILLBANK**: Organizes knowledge into General Skills for universal strategic guidance and Task-Specific Skills for category-level heuristics. 
+## Results
 
-- **Recursive Skill Evolution**: A dynamic mechanism where the skill library co-evolves with the agent's policy during RL by analyzing validation failures.
+| | Overall | Clean | Cool | Heat | Look | Pick | Pick2 | Time |
+|---|---|---|---|---|---|---|---|---|
+| **Baseline** | 78.36% (105/134) | 87.10% | 80.95% | 65.22% | 72.22% | 79.17% | 82.35% | 807s |
+| **Iteration 1** | 89.55% (120/134) | 96.77% | 90.48% | 86.96% | 94.44% | 95.83% | 64.71% | 607s |
+| **Iteration 2** | **93.28%** (125/134) | 93.55% | 95.24% | 95.65% | **100.00%** | 87.50% | 88.24% | 703s |
 
-- **Context Efficiency**: Achieves 10-20% token compression compared to raw trajectory storage while enhancing reasoning utility. 
+For reference, the full SkillRL paper (with GRPO training) reports 89.9% on ALFWorld. This frozen-model ablation surpasses that with skill evolution alone.
 
-## 🚀 Getting Started (Coming Soon)
+## How It Differs from the Paper
 
-We are currently preparing the codebase for public release.
+| | Paper (Full SkillRL) | This Implementation |
+|---|---|---|
+| **Model weights** | Fine-tuned with GRPO | Frozen (no updates) |
+| **Skill library** | Evolving hierarchical skills | Same |
+| **Teacher system** | Analyzes failures, distills skills | Same |
+| **Evaluation** | ALFWorld 134 tasks | Same |
+| **Research question** | Do skills + training improve performance? | Do skills *alone* improve performance? |
 
-## 📚 Citation
+## Architecture
+
+- **Agent**: Frozen DeepSeek V3.2 (`deepseek-chat`) with tool-calling, executes tasks via think-act-observe loop
+- **Skill Library**: Hierarchical — general skills (always injected) + task-specific skills (retrieved via FAISS semantic search, top-K=6)
+- **Teacher**: Same DeepSeek V3.2 with a different prompt; analyzes failed trajectories offline and proposes new skills
+- **Evolution Loop**: Evaluate all 134 tasks &rarr; collect failures &rarr; teacher distills skills &rarr; update library &rarr; repeat
+- **Evaluation**: 10 concurrent workers, atomic JSONL trajectory logging, W&B metrics
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.12+ (3.14 requires a TextWorld monkey-patch, included)
+- [uv](https://docs.astral.sh/uv/) for dependency management
+- DeepSeek API key
+
+### Installation
+
+```bash
+git clone https://github.com/your-org/SkillRL.git
+cd SkillRL
+uv sync
+```
+
+### Configuration
+
+Set your API key:
+```bash
+export DEEPSEEK_API_KEY="your-key"
+```
+
+### Running
+
+```bash
+# Run full evolution loop (eval → analyze → evolve → repeat)
+python -m src.main evolve --max-iterations 20
+
+# Run a single evaluation (no evolution)
+python -m src.main evaluate
+
+# Resume from a checkpoint
+python -m src.main evolve --resume
+```
+
+## Citation
+
 If you find our work helpful, please consider citing:
 
 ```bibtex

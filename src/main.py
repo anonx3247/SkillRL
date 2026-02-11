@@ -216,8 +216,8 @@ async def main():
     eval_parser.add_argument(
         "--max-concurrent",
         type=int,
-        default=10,
-        help="Maximum concurrent workers (default: 10)",
+        default=32,
+        help="Maximum concurrent workers (default: 32)",
     )
     eval_parser.add_argument(
         "--max-steps",
@@ -270,8 +270,8 @@ async def main():
     evolve_parser.add_argument(
         "--max-concurrent",
         type=int,
-        default=10,
-        help="Maximum concurrent workers (default: 10)",
+        default=32,
+        help="Maximum concurrent workers (default: 32)",
     )
     evolve_parser.add_argument(
         "--max-steps",

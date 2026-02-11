@@ -28,7 +28,7 @@ class EvolutionLoop:
         max_iterations: int = 20,
         patience: int = 5,
         min_delta: float = 0.01,
-        max_concurrent: int = 10,
+        max_concurrent: int = 32,
         max_steps: int = 50,
         top_k_skills: int = 3,
         wandb_project: str = "skillrl-evolution",
