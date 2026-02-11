@@ -31,10 +31,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Full trajectory captured per task with thought, action, observation per step plus final outcome (success/failure, step count, duration)
   4. Agent receives only natural language observations (no privileged state information)
 
-**Plans**: TBD (1-3 plans)
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: TBD during planning
+- [ ] 01-01-PLAN.md — Project scaffolding, trajectory data models, and JSONL persistence
+- [ ] 01-02-PLAN.md — ALFWorld environment wrapper with FastMCP tool server (11 tools)
+- [ ] 01-03-PLAN.md — Agent loop, DeepSeek integration, and end-to-end single-task execution
 
 ### Phase 2: Skill System & Evaluation
 **Goal**: Full 134-task evaluation with skill retrieval running in parallel, establishing baseline performance.
@@ -82,6 +84,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Agent Loop | 0/TBD | Not started | - |
+| 1. Foundation & Agent Loop | 0/3 | Planning complete | - |
 | 2. Skill System & Evaluation | 0/TBD | Not started | - |
 | 3. Teacher & Evolution | 0/TBD | Not started | - |
