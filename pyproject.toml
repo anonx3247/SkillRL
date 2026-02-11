@@ -12,6 +12,7 @@ dependencies = [
     "sentence-transformers>=3.4",
     "faiss-cpu>=1.13",
     "tqdm>=4.66",
+    "wandb>=0.24.2",
 ]
 
 [project.optional-dependencies]
