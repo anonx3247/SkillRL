@@ -16,7 +16,7 @@
 - [x] **AGT-01**: Agent runs autonomously in think → act → observe loop via DeepSeek V3.2 Reasoner (api.deepseek.com, OpenAI-compatible endpoint)
 - [x] **AGT-02**: Agent has `task_completed(success, summary)` tool to end its run
 - [x] **AGT-03**: Max 50 steps per task — failure if `task_completed` not called or task not done properly
-- [ ] **AGT-04**: Agent prompt includes retrieved skills from library when available
+- [x] **AGT-04**: Agent prompt includes retrieved skills from library when available
 - [x] **AGT-05**: Agent is told it's running autonomously with no user — must act independently
 
 ### Trajectory Recording
@@ -27,11 +27,11 @@
 
 ### Skill Library
 
-- [ ] **SKL-01**: Flat general skill library (no hierarchy — all skills are general purpose)
-- [ ] **SKL-02**: Skill format: name, principle, when_to_apply
-- [ ] **SKL-03**: Teacher MCP tools: add_skill, update_skill, remove_skill for library management
-- [ ] **SKL-04**: Semantic retrieval via sentence-transformers + faiss — TopK most relevant skills injected into agent prompt
-- [ ] **SKL-05**: Skill library persisted to disk as JSON
+- [x] **SKL-01**: Flat general skill library (no hierarchy — all skills are general purpose)
+- [x] **SKL-02**: Skill format: name, principle, when_to_apply
+- [x] **SKL-03**: Teacher MCP tools: add_skill, update_skill, remove_skill for library management
+- [x] **SKL-04**: Semantic retrieval via sentence-transformers + faiss — TopK most relevant skills injected into agent prompt
+- [x] **SKL-05**: Skill library persisted to disk as JSON
 
 ### Teacher & Evolution
 
@@ -44,12 +44,12 @@
 
 ### Evaluation & Orchestration
 
-- [ ] **EVL-01**: Full 134-task re-evaluation each iteration
-- [ ] **EVL-02**: Parallel task execution (10 concurrent workers)
-- [ ] **EVL-03**: Metrics per task: success (binary), step count, skills retrieved
-- [ ] **EVL-04**: Aggregate metrics per iteration: overall success rate, per-subtask success rate, avg steps (separate for successes and failures)
-- [ ] **EVL-05**: State persistence with atomic writes — stop and resume experiment at any point
-- [ ] **EVL-06**: Iteration 0 is baseline (no skills) for comparison
+- [x] **EVL-01**: Full 134-task re-evaluation each iteration
+- [x] **EVL-02**: Parallel task execution (10 concurrent workers)
+- [x] **EVL-03**: Metrics per task: success (binary), step count, skills retrieved
+- [x] **EVL-04**: Aggregate metrics per iteration: overall success rate, per-subtask success rate, avg steps (separate for successes and failures)
+- [x] **EVL-05**: State persistence with atomic writes — stop and resume experiment at any point
+- [x] **EVL-06**: Iteration 0 is baseline (no skills) for comparison
 
 ### Logging & Visualization
 
@@ -101,18 +101,18 @@
 | TRJ-01 | Phase 1 | Done |
 | TRJ-02 | Phase 1 | Done |
 | TRJ-03 | Phase 1 | Done |
-| SKL-01 | Phase 2 | Pending |
-| SKL-02 | Phase 2 | Pending |
-| SKL-03 | Phase 2 | Pending |
-| SKL-04 | Phase 2 | Pending |
-| SKL-05 | Phase 2 | Pending |
-| AGT-04 | Phase 2 | Pending |
-| EVL-01 | Phase 2 | Pending |
-| EVL-02 | Phase 2 | Pending |
-| EVL-03 | Phase 2 | Pending |
-| EVL-04 | Phase 2 | Pending |
-| EVL-05 | Phase 2 | Pending |
-| EVL-06 | Phase 2 | Pending |
+| SKL-01 | Phase 2 | Complete |
+| SKL-02 | Phase 2 | Complete |
+| SKL-03 | Phase 2 | Complete |
+| SKL-04 | Phase 2 | Complete |
+| SKL-05 | Phase 2 | Complete |
+| AGT-04 | Phase 2 | Complete |
+| EVL-01 | Phase 2 | Complete |
+| EVL-02 | Phase 2 | Complete |
+| EVL-03 | Phase 2 | Complete |
+| EVL-04 | Phase 2 | Complete |
+| EVL-05 | Phase 2 | Complete |
+| EVL-06 | Phase 2 | Complete |
 | TCH-01 | Phase 3 | Pending |
 | TCH-02 | Phase 3 | Pending |
 | TCH-03 | Phase 3 | Pending |

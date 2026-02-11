@@ -13,7 +13,7 @@ This roadmap delivers a controlled ablation experiment testing whether skill lib
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Agent Loop** - Environment integration, basic agent execution, trajectory logging
-- [ ] **Phase 2: Skill System & Evaluation** - Skill library, semantic retrieval, full 134-task evaluation with parallel execution
+- [x] **Phase 2: Skill System & Evaluation** - Skill library, semantic retrieval, full 134-task evaluation with parallel execution
 - [ ] **Phase 3: Teacher & Evolution** - Teacher distillation, autonomous skill evolution, W&B monitoring
 
 ## Phase Details
@@ -56,8 +56,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Skill library system: data model, CRUD with atomic JSON persistence, semantic retrieval (sentence-transformers + FAISS), prompt injection
-- [ ] 02-02-PLAN.md — Parallel evaluation orchestrator: 134-task concurrent execution, metrics, checkpointing, CLI integration
+- [x] 02-01-PLAN.md — Skill library system: data model, CRUD with atomic JSON persistence, semantic retrieval (sentence-transformers + FAISS), prompt injection
+- [x] 02-02-PLAN.md — Parallel evaluation orchestrator: 134-task concurrent execution, metrics, checkpointing, CLI integration
 
 ### Phase 3: Teacher & Evolution
 **Goal**: Autonomous multi-iteration skill evolution with teacher analyzing failures and proposing library updates, tracked live in W&B.
@@ -86,5 +86,5 @@ Phases execute in numeric order: 1 → 2 → 3
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Agent Loop | 3/3 | Complete | 2026-02-11 |
-| 2. Skill System & Evaluation | 0/2 | Not started | - |
+| 2. Skill System & Evaluation | 2/2 | Complete | 2026-02-11 |
 | 3. Teacher & Evolution | 0/TBD | Not started | - |
