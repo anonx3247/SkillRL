@@ -3,6 +3,7 @@
 import asyncio
 import json
 import time
+from collections.abc import Callable
 from typing import Any
 
 from src.agent.client import DeepSeekClient
@@ -38,16 +39,20 @@ def build_tools_spec() -> list[dict[str, Any]]:
             "type": "function",
             "function": {
                 "name": "take",
-                "description": "Pick up an object from the current location",
+                "description": "Pick up an object from a receptacle at the current location",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "object_name": {
                             "type": "string",
-                            "description": "The name of the object to take",
-                        }
+                            "description": "The name of the object to take (e.g., 'tomato 1')",
+                        },
+                        "from_receptacle": {
+                            "type": "string",
+                            "description": "The receptacle to take the object from (e.g., 'countertop 2')",
+                        },
                     },
-                    "required": ["object_name"],
+                    "required": ["object_name", "from_receptacle"],
                 },
             },
         },
@@ -55,7 +60,7 @@ def build_tools_spec() -> list[dict[str, Any]]:
             "type": "function",
             "function": {
                 "name": "put",
-                "description": "Place an object in or on a receptacle",
+                "description": "Place an object you are carrying in or on a receptacle at the current location",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -190,7 +195,7 @@ def build_tools_spec() -> list[dict[str, Any]]:
             "type": "function",
             "function": {
                 "name": "examine",
-                "description": "Look closely at an object to get more information",
+                "description": "Examine an object or receptacle at the current location to see its contents or details",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -248,9 +253,9 @@ def _map_tool_to_command(tool_name: str, arguments: dict[str, Any]) -> str:
     if tool_name == "go_to":
         return f"go to {arguments['location']}"
     elif tool_name == "take":
-        return f"take {arguments['object_name']}"
+        return f"take {arguments['object_name']} from {arguments['from_receptacle']}"
     elif tool_name == "put":
-        return f"put {arguments['object_name']} in/on {arguments['receptacle']}"
+        return f"move {arguments['object_name']} to {arguments['receptacle']}"
     elif tool_name == "open_receptacle":
         return f"open {arguments['receptacle']}"
     elif tool_name == "close_receptacle":
@@ -271,6 +276,53 @@ def _map_tool_to_command(tool_name: str, arguments: dict[str, Any]) -> str:
         raise ValueError(f"Unknown tool: {tool_name}")
 
 
+def format_step(step: Step, agent_index: int = 0, max_steps: int = 50) -> str:
+    """Format a step for display.
+
+    Args:
+        step: Step to format
+        agent_index: Agent index for prefix (for concurrent runs)
+        max_steps: Max steps (for progress display)
+
+    Returns:
+        Formatted string
+    """
+    prefix = f"[Agent {agent_index}]"
+    lines = []
+
+    # Step header
+    lines.append(f"{prefix} Step {step.step + 1}/{max_steps}")
+
+    # Thought (truncate if very long)
+    if step.thought:
+        thought = step.thought.strip()
+        if len(thought) > 200:
+            thought = thought[:200] + "..."
+        lines.append(f"{prefix}   Think: {thought}")
+
+    # Action
+    if step.action == "task_completed":
+        lines.append(f"{prefix}   Action: task_completed")
+    elif step.action == "no_action":
+        lines.append(f"{prefix}   Action: (none - agent failed to call a tool)")
+    else:
+        # Parse action_input for readable display
+        try:
+            args = json.loads(step.action_input)
+            args_str = ", ".join(f"{k}={v!r}" for k, v in args.items())
+        except (json.JSONDecodeError, TypeError):
+            args_str = step.action_input
+        lines.append(f"{prefix}   Action: {step.action}({args_str})")
+
+    # Observation (truncate if very long)
+    obs = step.observation.strip() if step.observation else ""
+    if len(obs) > 300:
+        obs = obs[:300] + "..."
+    lines.append(f"{prefix}   Result: {obs}")
+
+    return "\n".join(lines)
+
+
 async def run_task(
     task_description: str,
     task_id: str,
@@ -280,6 +332,7 @@ async def run_task(
     client: DeepSeekClient,
     max_steps: int = 50,
     wall_clock_timeout: float = 300.0,
+    on_step: Callable[[Step], None] | None = None,
 ) -> Trajectory:
     """Run agent on a single task with think-act-observe loop.
 
@@ -292,6 +345,7 @@ async def run_task(
         client: DeepSeek API client
         max_steps: Maximum number of steps (default: 50)
         wall_clock_timeout: Wall clock timeout in seconds (default: 300)
+        on_step: Optional callback invoked after each step for live display
 
     Returns:
         Trajectory with all steps and outcome
@@ -333,6 +387,8 @@ async def run_task(
                         observation="Error: No tool was called. You must call a tool to interact with the environment.",
                     )
                     steps.append(step)
+                    if on_step:
+                        on_step(step)
                     failure_reason = "no_tool_call"
                     break
 
@@ -353,6 +409,8 @@ async def run_task(
                             observation=f"Task marked as {'successful' if success else 'failed'}: {agent_summary}",
                         )
                         steps.append(step)
+                        if on_step:
+                            on_step(step)
                         task_complete = True
 
                         # Add tool response to conversation
@@ -379,6 +437,8 @@ async def run_task(
                         observation=observation,
                     )
                     steps.append(step)
+                    if on_step:
+                        on_step(step)
 
                     # Add tool response to conversation
                     messages.append({

@@ -20,16 +20,17 @@ async def go_to(location: str) -> str:
 
 
 @mcp.tool
-async def take(object_name: str) -> str:
-    """Pick up an object from the current location.
+async def take(object_name: str, from_receptacle: str) -> str:
+    """Pick up an object from a receptacle at the current location.
 
     Args:
         object_name: The name of the object to pick up (e.g., "apple 1", "mug 1", "knife 1")
+        from_receptacle: The receptacle to take the object from (e.g., "countertop 2", "cabinet 1")
 
     Returns:
         Observation string describing the result of picking up the object
     """
-    obs, _score, _done, _info = env_manager.step(f"take {object_name}")
+    obs, _score, _done, _info = env_manager.step(f"take {object_name} from {from_receptacle}")
     return obs
 
 
@@ -44,7 +45,7 @@ async def put(object_name: str, receptacle: str) -> str:
     Returns:
         Observation string describing the result of placing the object
     """
-    obs, _score, _done, _info = env_manager.step(f"put {object_name} in/on {receptacle}")
+    obs, _score, _done, _info = env_manager.step(f"move {object_name} to {receptacle}")
     return obs
 
 

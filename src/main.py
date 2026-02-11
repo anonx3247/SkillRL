@@ -6,7 +6,7 @@ import os
 import sys
 from pathlib import Path
 
-from src.agent import DeepSeekClient, build_tools_spec, run_task
+from src.agent import DeepSeekClient, build_tools_spec, format_step, run_task
 from src.environment.env_manager import EnvManager
 from src.trajectory.storage import append_trajectory
 
@@ -32,6 +32,12 @@ async def main():
         type=str,
         default="data/trajectories",
         help="Output directory for trajectories (default: data/trajectories)",
+    )
+    parser.add_argument(
+        "--agent-index",
+        type=int,
+        default=0,
+        help="Agent index prefix for display (default: 0)",
     )
     args = parser.parse_args()
 
@@ -67,8 +73,16 @@ async def main():
     client = DeepSeekClient()
     tools_spec = build_tools_spec()
 
+    # Step display callback
+    agent_idx = args.agent_index
+
+    def on_step(step):
+        print(format_step(step, agent_index=agent_idx, max_steps=args.max_steps))
+        print()
+
     # Run task
-    print(f"Running agent (max {args.max_steps} steps)...\n")
+    prefix = f"[Agent {agent_idx}]"
+    print(f"{prefix} Running (max {args.max_steps} steps)...\n")
     try:
         trajectory = await run_task(
             task_description=task_description,
@@ -78,28 +92,26 @@ async def main():
             tools_spec=tools_spec,
             client=client,
             max_steps=args.max_steps,
+            on_step=on_step,
         )
     except KeyboardInterrupt:
         print("\n\nInterrupted by user. Exiting...")
         sys.exit(0)
 
     # Print summary
-    print("\n" + "=" * 60)
-    print("TRAJECTORY SUMMARY")
     print("=" * 60)
-    print(f"Task ID: {trajectory.task_id}")
-    print(f"Task Type: {trajectory.task_type}")
-    print(f"Success: {trajectory.success}")
-    print(f"Total Steps: {trajectory.total_steps}")
-    print(f"Duration: {trajectory.duration_seconds:.2f} seconds")
+    print(f"{prefix} SUMMARY")
+    print("=" * 60)
+    print(f"{prefix} Task:    {trajectory.task_type} | {trajectory.task_id}")
+    print(f"{prefix} Result:  {'SUCCESS' if trajectory.success else 'FAILED'}")
+    print(f"{prefix} Steps:   {trajectory.total_steps}/{args.max_steps}")
+    print(f"{prefix} Time:    {trajectory.duration_seconds:.1f}s")
     if trajectory.failure_reason:
-        print(f"Failure Reason: {trajectory.failure_reason}")
+        print(f"{prefix} Reason:  {trajectory.failure_reason}")
 
     # Check for discrepancy between agent and env
     if env_manager.done != trajectory.success:
-        print("\n⚠️  WARNING: Discrepancy detected!")
-        print(f"   Agent declared success={trajectory.success}")
-        print(f"   Environment done={env_manager.done}")
+        print(f"\n{prefix} WARNING: Agent declared success={trajectory.success}, but env done={env_manager.done}")
 
     # Save trajectory
     output_path = Path(args.output_dir)

@@ -8,54 +8,22 @@ import yaml
 from alfworld.agents.environment import get_environment
 
 
-# Monkey-patch TextWorld Symbol to fix missing variable bug in eval
-def _patched_symbol_derive(original_derive):
-    """Wrap Symbol.derive to provide missing variables in eval context."""
-    def derive_wrapper(self):
-        # Inject dummy variables into the eval namespace
-        class DummyObject:
-            def __init__(self, obj_name="item"):
-                self.name = obj_name
-                self.indefinite = f"a {obj_name}"
-                self.definite = f"the {obj_name}"
-                self.type = obj_name
-
-            def __getattr__(self, name):
-                # Return dummy value for any missing attribute
-                return f"{self.name}_{name}"
-
-        # Patch the expression evaluation
-        if hasattr(self, 'expression') and self.expression:
-            try:
-                # Try original evaluation first
-                return original_derive(self)
-            except NameError as e:
-                # If a variable is missing, provide a dummy
-                missing_var = str(e).split("'")[1] if "'" in str(e) else "r"
-                eval_globals = {missing_var: DummyObject(missing_var)}
-                eval_locals = {}
-                try:
-                    value = eval(self.expression, eval_globals, eval_locals)
-                    if callable(value):
-                        value = value()
-                    # Wrap the result properly as a terminal symbol
-                    from textworld.envs.pddl.textgen import TerminalSymbol
-                    if not isinstance(value, list):
-                        return [TerminalSymbol(str(value))]
-                    return [TerminalSymbol(str(v)) for v in value]
-                except Exception as ex:
-                    # Fall back to original - this will likely fail but preserves original behavior
-                    return original_derive(self)
-        return original_derive(self)
-
-    return derive_wrapper
-
-# Apply patch
+# Monkey-patch TextWorld EvalSymbol.derive to fix Python 3.13+ compatibility.
+# TextWorld uses locals().update(context["variables"]) then eval(self.expression),
+# but locals().update() does NOT affect eval()'s scope in Python 3.13+.
+# Fix: pass variables directly to eval() as the locals dict.
 try:
-    from textworld.envs.pddl.textgen import EvalSymbol
-    EvalSymbol.derive = _patched_symbol_derive(EvalSymbol.derive)
+    from textworld.envs.pddl.textgen import EvalSymbol, TerminalSymbol
+
+    def _fixed_eval_derive(self, context=None):
+        context = context or self.context
+        variables = context.get("variables", {})
+        value = eval(self.expression, {"__builtins__": {}}, variables)
+        return [TerminalSymbol(value)]
+
+    EvalSymbol.derive = _fixed_eval_derive
 except ImportError:
-    pass  # Skip if TextWorld structure is different
+    pass
 
 
 class EnvManager:
@@ -150,13 +118,19 @@ class EnvManager:
         self.task_completed_success = None
         self.task_completed_summary = None
 
-        # Store admissible commands if available
+        # Store admissible commands if available (un-batch if nested)
         if "admissible_commands" in info_dict:
-            self.admissible_commands = info_dict["admissible_commands"]
+            ac = info_dict["admissible_commands"]
+            if ac and isinstance(ac[0], list):
+                ac = ac[0]
+            self.admissible_commands = ac
 
-        # Extract task ID from gamefile path or other info
-        if "game_file" in info_dict:
-            self.current_task_id = info_dict["game_file"]
+        # Extract task ID from gamefile path
+        if "extra.gamefile" in info_dict:
+            val = info_dict["extra.gamefile"]
+            if isinstance(val, list):
+                val = val[0]
+            self.current_task_id = val
 
         return observation, info_dict
 
