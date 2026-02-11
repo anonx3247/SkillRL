@@ -7,7 +7,7 @@ from collections.abc import Callable
 from typing import Any
 
 from src.agent.client import DeepSeekClient
-from src.agent.prompts import AUTONOMOUS_AGENT_PROMPT
+from src.agent.prompts import AUTONOMOUS_AGENT_PROMPT, build_prompt_with_skills
 from src.trajectory.models import Step, Trajectory
 
 
@@ -333,6 +333,7 @@ async def run_task(
     max_steps: int = 50,
     wall_clock_timeout: float = 300.0,
     on_step: Callable[[Step], None] | None = None,
+    retrieved_skills: list | None = None,
 ) -> Trajectory:
     """Run agent on a single task with think-act-observe loop.
 
@@ -346,6 +347,7 @@ async def run_task(
         max_steps: Maximum number of steps (default: 50)
         wall_clock_timeout: Wall clock timeout in seconds (default: 300)
         on_step: Optional callback invoked after each step for live display
+        retrieved_skills: Optional list of skills to inject into prompt
 
     Returns:
         Trajectory with all steps and outcome
@@ -354,7 +356,7 @@ async def run_task(
 
     # Initialize conversation with system prompt and task
     messages = [
-        {"role": "system", "content": AUTONOMOUS_AGENT_PROMPT},
+        {"role": "system", "content": build_prompt_with_skills(retrieved_skills)},
         {"role": "user", "content": f"Complete this task:\n\n{task_description}"},
     ]
 
