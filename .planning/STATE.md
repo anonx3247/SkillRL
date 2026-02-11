@@ -10,19 +10,19 @@ See: .planning/PROJECT.md (updated 2026-02-11)
 
 ## Current Position
 
-Phase: 2 of 3 (Skill System & Evaluation) — Complete
-Plan: 2 of 2 in current phase
-Status: Phase 2 complete
-Last activity: 2026-02-11 — Phase 2 complete (all plans executed, verified, bugs fixed)
+Phase: 3 of 3 (Teacher & Evolution) — In Progress
+Plan: 1 of 3 in current phase
+Status: 03-01 complete
+Last activity: 2026-02-11 — Completed 03-01-PLAN.md
 
-Progress: [██████░░░░] 67%
+Progress: [███████░░░] 75%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: ~11 min
-- Total execution time: ~1.1 hours
+- Total plans completed: 6
+- Average duration: ~10 min
+- Total execution time: ~1.2 hours
 
 **By Phase:**
 
@@ -30,6 +30,7 @@ Progress: [██████░░░░] 67%
 |-------|-------|-------|----------|
 | Phase 1 | 3 | ~48 min | ~16 min |
 | Phase 2 | 2 | ~10 min | ~5 min |
+| Phase 3 | 1 | ~3 min | ~3 min |
 
 *Updated after each plan completion*
 
@@ -77,6 +78,13 @@ Recent decisions affecting current work:
 - CLI restructured with subcommands for extensibility (run, evaluate)
 - Iteration 0 baseline runs with empty skill library (no skills retrieved)
 
+**From 03-01:**
+- Teacher uses same DeepSeek model as agent (no separate reasoning model)
+- Batch size default 10 trajectories per LLM call for efficiency
+- Post-process regex validation rejects skills mentioning specific objects/locations
+- Teacher prompts include negative examples (BAD skills) to enforce abstraction
+- Deduplicate proposals by (skill_name, action) tuple
+
 ### Pending Todos
 
 None.
@@ -96,7 +104,7 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-11
-Stopped at: Phase 2 complete
+Stopped at: Completed 03-01-PLAN.md
 Resume file: None
 
-**Next action:** Plan Phase 3 (Teacher & Evolution) — `/gsd:plan-phase 3`
+**Next action:** Execute 03-02-PLAN.md (Skill Library Evolution) — `/gsd:execute-plan 03-02`
